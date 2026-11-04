@@ -67,6 +67,13 @@ configure_retroarch() {
   set_retroarch_option sort_savestates_enable true
 }
 
+install_controller_profiles() {
+  log "Perfis de controle do RetroArch"
+  mkdir -p "$RA_DIR/autoconfig/udev"
+  flatpak run --command=cp "$RA_ID" -rn /app/share/libretro/autoconfig/. "$RA_DIR/autoconfig/"
+  cp -f "$REPO/retroarch/autoconfig/udev/"*.cfg "$RA_DIR/autoconfig/udev/"
+}
+
 link_dir() {
   local target="$1" link="$2"
   mkdir -p "$target" "$(dirname "$link")"
@@ -114,6 +121,7 @@ install_retroarch
 install_cores
 install_esde
 configure_retroarch
+install_controller_profiles
 configure_esde
 create_rom_dirs
 create_desktop_entry
